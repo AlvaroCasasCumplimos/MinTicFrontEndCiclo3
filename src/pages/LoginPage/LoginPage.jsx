@@ -14,7 +14,8 @@ const LoginPage = () => {
       <div className="containerLogin">
         <form
           className="formContainer"
-          onSubmit={() => {
+          onSubmit={(e) => {
+            e.preventDefault();
             login({
               email: datosInicio.username,
               password: datosInicio.password,
@@ -48,10 +49,7 @@ const LoginPage = () => {
               });
             }}
           ></Input>
-          <button
-          className="buttonLogin">
-            Login
-          </button>
+          <button className="buttonLogin">Login</button>
         </form>
       </div>
     </div>

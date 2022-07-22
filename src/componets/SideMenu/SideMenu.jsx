@@ -7,12 +7,6 @@ const SideMenu = () => {
   const { logout, role, name } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const logoutClick = () => {
-    logout();
-    navigate("/login", {
-      replace: true,
-    });
-  };
   //  Role 1 = administrador
   //  2 = vendedor
   //  3 = comprador
