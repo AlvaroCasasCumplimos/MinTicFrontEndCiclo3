@@ -22,7 +22,7 @@ const SideMenu = () => {
         route: "gestion_productos",
       });
     }
-    if (role === "2") {
+    if (role === "1") {
       vectorData.push({
         label: "Clientes",
         route: "gestion_clientes",
@@ -32,7 +32,7 @@ const SideMenu = () => {
         route: "sell_items",
       });
     }
-    if (role === "3") {
+    if (role === "1") {
       vectorData.push({
         label: "Proveedores",
         route: "gestion_proveedores",

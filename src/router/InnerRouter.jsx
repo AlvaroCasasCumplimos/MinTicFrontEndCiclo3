@@ -26,7 +26,7 @@ const InnerRouter = () => {
             <Route
               path="/modules/buy_items"
               element={
-                <RoleRoute roles={["3"]}>
+                <RoleRoute roles={["1"]}>
                   <BuyItems />
                 </RoleRoute>
               }
@@ -42,7 +42,7 @@ const InnerRouter = () => {
             <Route
               path="/modules/gestion_clientes"
               element={
-                <RoleRoute roles={["2"]}>
+                <RoleRoute roles={["1"]}>
                   <GestionClientes />
                 </RoleRoute>
               }
@@ -50,7 +50,7 @@ const InnerRouter = () => {
             <Route
               path="/modules/gestion_proveedores"
               element={
-                <RoleRoute roles={["3"]}>
+                <RoleRoute roles={["1"]}>
                   <GestionProveedores />
                 </RoleRoute>
               }
@@ -74,7 +74,7 @@ const InnerRouter = () => {
             <Route
               path="/modules/sell_items"
               element={
-                <RoleRoute roles={["2"]}>
+                <RoleRoute roles={["1"]}>
                   <SellItems />
                 </RoleRoute>
               }

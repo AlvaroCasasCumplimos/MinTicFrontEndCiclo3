@@ -1,0 +1,7 @@
+.containerInnerModules{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    margin: 50px 50px;
+    flex-direction: column;
+}
