@@ -19,7 +19,7 @@
   /* flex: 1 1 50%; */
   padding: 10px 20px;
   border-radius: 7px;
-  background-color: beige;
+  background-color: rgb(247, 247, 240);
   color: black;
   /* @apply px-4 py-2 rounded-md bg-secondary-light text-black; */
 }

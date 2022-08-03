@@ -2,7 +2,10 @@ import {
   Button,
   Stack
 } from "@mui/material";
+import { useCallback, useState } from "react";
 import { Component } from "react";
+import Input from "../../componets/Input";
+import Modal from "../../componets/Modal/Modal";
 import TableModules from "../../componets/TableModules/TableModules";
 import "./gestionUsuarios.css";
 
@@ -58,32 +61,24 @@ const GestionUsuarios = () => {
     },
   ];
   const headers = ["Id", "Name", "obj", "COm"];
+  const [datos, setDatos] = useState({
+    id:"",
+    nombre: "",
+    password: "",
+    role:""
+  });
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = useCallback(() => {
+    setShowModal(false);
+  }, []);
   return (
+    <>
     <div className="containerInnerModules">
-      <h1>Creación de usuarios</h1>
-          <form>
-            <input type="Id" placeholder="Id del Usuario"/>
-            <input type="Name" placeholder="Nombre del Usuario"/>
-            <input type="obj" placeholder="Rol"/>
-            <input type="COm" placeholder="Contraseña"/>
-            
-          </form>
           
       <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Crear usuario</Button>
+        <Button onClick={()=>setShowModal(true)}  variant="contained" color="success"  size="large" >Crear usuario</Button>
       </Stack>
-      
-      <h1>Actualización y eliminación de usuarios</h1>
-          <form>
-            <input type="Id" placeholder="Id del usuario a actualizar"/>
-            <input type="Name" placeholder="Nombre nuevo"/>
-            <input type="obj" placeholder="Rol nuevo"/>
-            <input type="COm" placeholder="Contraseña nueva"/>
-          </form>
-      <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Actualizar usuario</Button>
-        <Button  variant="contained" color="success"  size="large" >Eliminar usuario</Button>
-      </Stack>
+    
 
       <h1>Lista de usuarios</h1>
 
@@ -91,13 +86,67 @@ const GestionUsuarios = () => {
         data={data}
         headers={headers}
         onSelectRow={(x, y) => {
+          setShowModal(true)
+          setDatos((old)=>({
+            ...old,
+          }))
           console.log(`sleeee${x},${y}`);
         }}
       />
-      <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Actualizar Listado</Button>
-      </Stack>
+
+
     </div>
+    <Modal show={showModal} handleClose={handleClose} >
+    <form
+          className="formContainer"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <h1>Actualizar usuario</h1>
+          <Input
+            id="user"
+            label="Nombre de usuario"
+            type="text"
+            name="user"
+            required
+            value={datos.nombre}
+            onInput={(e) => {
+              setDatos((old) => {
+                return { ...old, nombre: e.target.value };
+              });
+            }}
+          ></Input>
+          <Input
+            id="role"
+            label="Rol del usuario"
+            type="text"
+            name="role"
+            required
+            value={datos.role}
+            onInput={(e) => {
+              setDatos((old) => {
+                return { ...old, role: e.target.value };
+              });
+            }}
+          ></Input>
+          <Input
+            id="password"
+            label="Contraseña"
+            type="password"
+            name="password"
+            required
+            value={datos.password}
+            onInput={(e) => {
+              setDatos((old) => {
+                return { ...old, password: e.target.value };
+              });
+            }}
+          ></Input>
+          <Button  variant="contained" color="success"  size="large" >Actualizar usuario</Button>
+        </form>
+    </Modal>
+    </>
   );
 };
 export default GestionUsuarios;
