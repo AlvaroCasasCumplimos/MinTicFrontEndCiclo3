@@ -12,47 +12,51 @@ import { consultaInventario, crearInventario } from "./utils/fetchInventario";
 const Inventario = () => {
 
     const [datos, setDatos] = useState({
+      id:"",
+      id_producto: "",
+      amount: "",
+      price:""
+    });
+    
+    const [showModal, setShowModal] = useState(false);
+    const [inventarios, setInventarios] = useState([]);
+    const handleClose = useCallback(() => {
+      setDatos({
         id:"",
         id_producto: "",
         amount: "",
         price:""
-      });
-      const [showModal, setShowModal] = useState(false);
-      const [inventarios, setInventarios] = useState([]);
-      const handleClose = useCallback(() => {
-        setDatos({
-            id:"",
-            id_producto: "",
-            amount: "",
-            price:""
-        })
-        fetchInventariosFunc()
-        setShowModal(false);
-      }, []);
-      const tableInventarios = useMemo(() => {
-        return [
-          ...inventarios.map(
-            ({
-                id,
-                id_producto,
-                amount,
-                price,
-                created_at,
-                updated_at
-            }) => {
-              return {
-                id,
-                id_producto,
-                amount,
-                price,
-              };
-            }
-          ),
-        ];
-      }, [inventarios]);
+      })
+      fetchInventariosFunc()
+      setShowModal(false);
+    }, []);
+    
+    const tableInventarios = useMemo(() => {
+      return [
+      ...inventarios.map(
+        (
+          {
+            id,
+            id_producto,
+            amount,
+            price,
+            created_at,
+            updated_at
+          }
+        ) => {
+          return {
+            id,
+            id_producto,
+            amount,
+            price,
+          };
+        }
+      ),];
+    }, [inventarios]);
       useEffect(() => {
         fetchInventariosFunc()
       }, [])
+      
       const fetchInventariosFunc = useCallback(() => {
         consultaInventario({ })
           .then((autoArr) => {
@@ -60,6 +64,7 @@ const Inventario = () => {
           })
           .catch((err) => console.error(err));
       }, []);
+      
       const onChange = (ev) =>{
         setDatos((old)=>({
             ...old,

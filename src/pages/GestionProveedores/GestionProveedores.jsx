@@ -1,73 +1,134 @@
 import {
-    Button,
-    Stack
-  } from "@mui/material";
-  import { Component } from "react";
-  import TableModules from "../../componets/TableModules/TableModules";
-  import "./gestionProveedores.css";
+  Button,
+  Stack
+} from "@mui/material";
+import { Component, useCallback, useEffect, useMemo, useState } from "react";
+import Input from "../../componets/Input";
+import Modal from "../../componets/Modal/Modal";
+import TableModules from "../../componets/TableModules/TableModules";
+import "./gestionProveedores.css";
+import { consultaProveedores, crearProveedor } from "./utils/fetchProveedores";
 
 const GestionProveedores = () => {
 
-    const data = [
-        {
-          id: 1,
-          name: "Finca Verduras",
-          Contacto: "31467765465",
-          email: "FincVerdur@hotmail.com",
-          UEN: "UEN1",
-        },
-        {
-            id: 2,
-            name: "Finca Frutas",
-            Contacto: "31467765465",
-            email: "FincFrut@gmail.com",
-            UEN: "UEN2",
-          },
-    ];
-    const headers = ["Id", "Name", "Contacto", "email","UEN"];
+  const [datos, setDatos] = useState({
+      id_people: "",
+      uen: "",
+    });
+    const [showModal, setShowModal] = useState(false);
+    const [GestionProveedores, setProveedores] = useState([]);
+    const handleClose = useCallback(() => {
+      setDatos({
+        id_people:"",
+        uen:"",
+      })
+      fetchProveedoresFunc()
+      setShowModal(false);
+    }, []);
+    const tableProveedores = useMemo(() => {
+      return [
+        ...GestionProveedores.map(
+          ({
+              id_people,
+              uen,
+              created_at,
+              updated_at
+          }) => {
+            return {
+              id_people,
+              uen,
+            };
+          }
+        ),
+      ];
+    }, [GestionProveedores]);
+    useEffect(() => {
+      fetchProveedoresFunc()
+    }, [])
+    const fetchProveedoresFunc = useCallback(() => {
+      consultaProveedores({ })
+        .then((autoArr) => {
+          setProveedores(autoArr ?? []);
+        })
+        .catch((err) => console.error(err));
+    }, []);
+    const onChange = (ev) =>{
+      setDatos((old)=>({
+          ...old,
+          [ev.target.name]:ev.target.value
+      }))
+    }
+    const onSubmit = (ev) =>{
+      ev.preventDefault();
+      if (datos.id_people !== ""){
 
-    return(
-        <div className="containerInnerModules">
-      <h1>Creación de Proveedores</h1>
-          <form>
-            <input type="Id" placeholder="Id del Proveedor"/>
-            <input type="Name" placeholder="Nombre del Proveedor"/>
-            <input type="Contacto" placeholder="Numero de contacto"/>
-            <input type="email" placeholder="Correo electrónico"/>
-            <input type="UEN" placeholder="UEN"/>
+      }else{
+          crearProveedor({
+              id_people:datos.id_people,
+              uen:datos.uen, 
+          })
+        .then((autoArr) => {
+          console.log(autoArr)
+          handleClose()
+        })
+        .catch((err) => console.error(err));
+      }
+    }
+    const headers = ["Id People", "UEN"];
+    return (
+      <>
+      <div className="containerInnerModules">
             
-          </form>
-          
-      <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Crear Proveedor</Button>
-      </Stack>
+        <Stack spacing={2} direction="row">
+          <Button onClick={()=>setShowModal(true)}  variant="contained" color="success"  size="large" >Agregar Proveedor</Button>
+        </Stack>
       
-      <h1>Actualización y eliminación de Proveedores</h1>
-          <form>
-            <input type="Id" placeholder="Id del Proveedor a actualizar"/>
-            <input type="Name" placeholder="Nombre nuevo"/>
-            <input type="Contacto" placeholder="Contacto nuevo"/>
-            <input type="email" placeholder="email nuevo"/>
-            <input type="UEN" placeholder="UEN nuevo"/>
+  
+        <h1>Proveedores</h1>
+  
+        <TableModules
+          data={tableProveedores??[]}
+          headers={headers}
+          onSelectRow={(y, x) => {
+            setShowModal(true)
+            setDatos((old)=>({
+              id_people:tableProveedores[x].id_people,
+              uen:tableProveedores[x].uen,
+            }))
+          }}
+        />
+  
+  
+      </div>
+      <Modal show={showModal} handleClose={handleClose} >
+      <form
+            className="formContainer"
+            onSubmit={onSubmit}
+          >
+            <h1>{datos.id_people !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</h1>
+            <Input
+              id="id_people"
+              label="Id people"
+              type="text"
+              name="id_people"
+              required
+              value={datos.id_people}
+              onInput={onChange}
+            ></Input>
+            <Input
+              id="uen"
+              label="uen"
+              type="text"
+              name="uen"
+              required
+              value={datos.uen}
+              onInput={onChange}
+            ></Input>
+            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id_people !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</Button>
           </form>
-      <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Actualizar Proveedor</Button>
-        <Button  variant="contained" color="success"  size="large" >Eliminar Proveedor</Button>
-      </Stack>
-
-      <h1>Lista de proveedores</h1>
-
-      <TableModules
-        data={data}
-        headers={headers}
-        onSelectRow={(x, y) => {
-          console.log(`sleeee${x},${y}`);
-        }}
-      />
-      <Stack spacing={2} direction="row">
-        <Button  variant="contained" color="success"  size="large" >Actualizar Listado</Button>
-      </Stack>
-    </div>
-    )
-}
+      </Modal>
+      </>
+    );
+  };
+  
 export default GestionProveedores
