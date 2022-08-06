@@ -13,6 +13,7 @@ const GestionProveedores = () => {
 
   const [datos, setDatos] = useState({
       id_people: "",
+      id:"",
       uen: "",
     });
     const [showModal, setShowModal] = useState(false);
@@ -20,6 +21,7 @@ const GestionProveedores = () => {
     const handleClose = useCallback(() => {
       setDatos({
         id_people:"",
+        id:"",
         uen:"",
       })
       fetchProveedoresFunc()
@@ -30,12 +32,14 @@ const GestionProveedores = () => {
         ...GestionProveedores.map(
           ({
               id_people,
+              id,
               uen,
               created_at,
               updated_at
           }) => {
             return {
               id_people,
+              id,
               uen,
             };
           }
@@ -60,7 +64,7 @@ const GestionProveedores = () => {
     }
     const onSubmit = (ev) =>{
       ev.preventDefault();
-      if (datos.id_people !== ""){
+      if (datos.id !== ""){
 
       }else{
           crearProveedor({
@@ -74,7 +78,7 @@ const GestionProveedores = () => {
         .catch((err) => console.error(err));
       }
     }
-    const headers = ["Id People", "UEN"];
+    const headers = ["Id People","id", "UEN"];
     return (
       <>
       <div className="containerInnerModules">
@@ -93,6 +97,7 @@ const GestionProveedores = () => {
             setShowModal(true)
             setDatos((old)=>({
               id_people:tableProveedores[x].id_people,
+              id:tableProveedores[x].id,
               uen:tableProveedores[x].uen,
             }))
           }}
@@ -105,11 +110,11 @@ const GestionProveedores = () => {
             className="formContainer"
             onSubmit={onSubmit}
           >
-            <h1>{datos.id_people !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</h1>
+            <h1>{datos.id !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</h1>
             <Input
               id="id_people"
-              label="Id people"
-              type="text"
+              label="Id_people"
+              type="number"
               name="id_people"
               required
               value={datos.id_people}
@@ -124,7 +129,7 @@ const GestionProveedores = () => {
               value={datos.uen}
               onInput={onChange}
             ></Input>
-            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id_people !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</Button>
+            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</Button>
           </form>
       </Modal>
       </>

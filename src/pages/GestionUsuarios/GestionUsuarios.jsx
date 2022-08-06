@@ -12,7 +12,8 @@ import { consultaUsuarios, crearUsuario } from "./utils/fetchUsuarios";
 const GestionUsuarios = () => {
 
   const [datos, setDatos] = useState({
-      name_user: "",
+      id: "",
+      name: "",
       address: "",
       phone: ""
     });
@@ -20,7 +21,8 @@ const GestionUsuarios = () => {
     const [GestionUsuarios, setUsuarios] = useState([]);
     const handleClose = useCallback(() => {
       setDatos({
-        name_user: "",
+        id: "",
+        name: "",
         address: "",
         phone: ""
       })
@@ -31,14 +33,16 @@ const GestionUsuarios = () => {
       return [
         ...GestionUsuarios.map(
           ({
-              name_user,
+              id,
+              name,
               address,
               phone,
               created_at,
               updated_at
           }) => {
             return {
-              name_user,
+              id,
+              name,
               address,
               phone
             };
@@ -64,11 +68,11 @@ const GestionUsuarios = () => {
     }
     const onSubmit = (ev) =>{
       ev.preventDefault();
-      if (datos.name_user !== ""){
+      if (datos.id !== ""){
 
       }else{
           crearUsuario({
-              name_user:datos.name_user,
+              name:datos.name,
               address:datos.address,
               phone:datos.address 
           })
@@ -79,7 +83,7 @@ const GestionUsuarios = () => {
         .catch((err) => console.error(err));
       }
     }
-    const headers = ["Name User", "address","phone"];
+    const headers = ["ID","Name", "address","phone"];
     return (
       <>
       <div className="containerInnerModules">
@@ -97,7 +101,8 @@ const GestionUsuarios = () => {
           onSelectRow={(y, x) => {
             setShowModal(true)
             setDatos((old)=>({
-              name_user:tableUsuarios[x].name_user,
+              id:tableUsuarios[x].id,
+              name_user:tableUsuarios[x].name,
               address:tableUsuarios[x].address,
               phone:tableUsuarios[x].phone
             }))
@@ -113,12 +118,12 @@ const GestionUsuarios = () => {
           >
             <h1>{datos.id_people !== "" ?  "Actualizar Usuario" : "Agregar Usuarios"}</h1>
             <Input
-              id="name_user"
-              label="name_user"
+              id="name"
+              label="name"
               type="text"
-              name="name_user"
+              name="name"
               required
-              value={datos.name_user}
+              value={datos.name}
               onInput={onChange}
             ></Input>
             <Input
@@ -139,7 +144,7 @@ const GestionUsuarios = () => {
               value={datos.phone}
               onInput={onChange}
             ></Input>
-            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</Button>
+            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Usuario" : "Agregar Usuario"}</Button>
           </form>
       </Modal>
       </>

@@ -12,6 +12,7 @@ import { consultaProductos, crearProducto } from "./utils/fetchProductos";
 const GestionProductos = () => {
 
   const [datos, setDatos] = useState({
+      id:"",
       name:"",
       description: "",
     });
@@ -19,6 +20,7 @@ const GestionProductos = () => {
     const [GestionProductos, setProductos] = useState([]);
     const handleClose = useCallback(() => {
       setDatos({
+          id:"",
           name:"",
           description: "",
       })
@@ -29,12 +31,14 @@ const GestionProductos = () => {
       return [
         ...GestionProductos.map(
           ({
+              id,
               name,
               description,
               created_at,
               updated_at
           }) => {
             return {
+              id,
               name,
               description,
             };
@@ -60,7 +64,7 @@ const GestionProductos = () => {
     }
     const onSubmit = (ev) =>{
       ev.preventDefault();
-      if (datos.name !== ""){
+      if (datos.id !== ""){
 
       }else{
           crearProducto({
@@ -74,7 +78,7 @@ const GestionProductos = () => {
         .catch((err) => console.error(err));
       }
     }
-    const headers = ["name", "Description"];
+    const headers = ["id","name", "Description"];
     return (
       <>
       <div className="containerInnerModules">
@@ -93,6 +97,7 @@ const GestionProductos = () => {
             setShowModal(true)
             setDatos((old)=>({
               name:tableProductos[x].name,
+              id:tableProductos[x].id,
               description:tableProductos[x].description,
             }))
           }}
@@ -124,7 +129,7 @@ const GestionProductos = () => {
               value={datos.description}
               onInput={onChange}
             ></Input>
-            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.name !== "" ?  "Actualizar Productos" : "Agregar Productos"}</Button>
+            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Productos" : "Agregar Productos"}</Button>
           </form>
       </Modal>
       </>

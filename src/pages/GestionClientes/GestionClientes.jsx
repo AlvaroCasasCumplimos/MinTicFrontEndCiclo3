@@ -13,14 +13,16 @@ const GestionClientes = () => {
 
   const [datos, setDatos] = useState({
       id_people:"",
-      typec: "",
+      id:"",
+      type: "",
     });
     const [showModal, setShowModal] = useState(false);
     const [GestionClientes, setClientes] = useState([]);
     const handleClose = useCallback(() => {
       setDatos({
           id_people:"",
-          typec: "",
+          id:"",
+          type: "",
       })
       fetchClientesFunc()
       setShowModal(false);
@@ -30,13 +32,15 @@ const GestionClientes = () => {
         ...GestionClientes.map(
           ({
             id_people,
-            typec,
+            id,
+            type,
             created_at,
             updated_at
           }) => {
             return {
               id_people,
-              typec,
+              id,
+              type,
             };
           }
         ),
@@ -60,12 +64,12 @@ const GestionClientes = () => {
     }
     const onSubmit = (ev) =>{
       ev.preventDefault();
-      if (datos.id_people !== ""){
+      if (datos.id !== ""){
 
       }else{
           crearCliente({
               id_people:datos.id_people,
-              typec:datos.typec
+              type:datos.type
           })
         .then((autoArr) => {
           console.log(autoArr)
@@ -74,7 +78,7 @@ const GestionClientes = () => {
         .catch((err) => console.error(err));
       }
     }
-    const headers = ["id_people", "Type"];
+    const headers = ["id_people","id", "Type"];
     return (
       <>
       <div className="containerInnerModules">
@@ -93,7 +97,8 @@ const GestionClientes = () => {
             setShowModal(true)
             setDatos((old)=>({
               id_people:tableClientes[x].id_people,
-              typec:tableClientes[x].typec,
+              id:tableClientes[x].id,
+              type:tableClientes[x].type,
             }))
           }}
         />
@@ -107,23 +112,24 @@ const GestionClientes = () => {
           >
             <h1>{datos.id !== "" ?  "Actualizar Cliente" : "Agregar Cliente"}</h1>
             <Input
-              id_people="id_people"
-              type="text"
+              id="id_people"
+              label="id_people"
+              type="number"
               name="id_people"
               required
               value={datos.id_people}
               onInput={onChange}
             ></Input>
             <Input
-              typec="type"
-              label="Cantidad"
+              id="type"
+              label="type"
               type="text"
               name="type"
               required
               value={datos.type}
               onInput={onChange}
             ></Input>
-            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id_people !== "" ?  "Actualizar Cliente" : "Agregar Cliente"}</Button>
+            <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Cliente" : "Agregar Cliente"}</Button>
           </form>
       </Modal>
       </>
