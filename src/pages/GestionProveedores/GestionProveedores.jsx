@@ -7,7 +7,7 @@ import Input from "../../componets/Input";
 import Modal from "../../componets/Modal/Modal";
 import TableModules from "../../componets/TableModules/TableModules";
 import "./gestionProveedores.css";
-import { consultaProveedores, crearProveedor } from "./utils/fetchProveedores";
+import { consultaProveedores, crearProveedor, actualizarProveedor, eliminarProveedor } from "./utils/fetchProveedores";
 
 const GestionProveedores = () => {
 
@@ -65,7 +65,14 @@ const GestionProveedores = () => {
     const onSubmit = (ev) =>{
       ev.preventDefault();
       if (datos.id !== ""){
-
+        actualizarProveedor(datos.id,{
+          id_people:datos.id_people,
+          uen:datos.uen
+        })
+        .then((autoArr) => {
+          console.log(autoArr)
+          handleClose()
+        })
       }else{
           crearProveedor({
               id_people:datos.id_people,
@@ -130,6 +137,17 @@ const GestionProveedores = () => {
               onInput={onChange}
             ></Input>
             <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Proveedor" : "Agregar Proveedor"}</Button>
+          
+            <h1></h1>
+
+{datos.id &&
+<Button onClick={()=>eliminarProveedor(datos.id).then((autoArr) => {
+  console.log(autoArr)
+  handleClose()
+})} type="submit"  variant="contained" color="error"  size="large" >Eliminar Proveedor</Button>
+}
+          
+          
           </form>
       </Modal>
       </>

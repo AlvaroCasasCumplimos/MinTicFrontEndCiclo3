@@ -7,7 +7,7 @@ import Input from "../../componets/Input";
 import Modal from "../../componets/Modal/Modal";
   import TableModules from "../../componets/TableModules/TableModules";
   import "./Inventario.css";
-import { consultaInventario, crearInventario } from "./utils/fetchInventario";
+import { consultaInventario, crearInventario, actualizarInventario,eliminarInventario } from "./utils/fetchInventario";
 
 const Inventario = () => {
 
@@ -74,7 +74,15 @@ const Inventario = () => {
       const onSubmit = (ev) =>{
         ev.preventDefault();
         if (datos.id !== ""){
-
+          actualizarInventario(datos.id,{
+            id_producto:datos.id_producto,
+                amount:datos.amount,
+                price:datos.price, 
+          })
+          .then((autoArr) => {
+            console.log(autoArr)
+            handleClose()
+          })
         }else{
             crearInventario({
                 id_producto:datos.id_producto,
@@ -150,6 +158,16 @@ const Inventario = () => {
                 onInput={onChange}
               ></Input>
               <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar inventario" : "Agregar inventario"}</Button>
+            
+              <h1></h1>
+
+{datos.id &&
+<Button onClick={()=>eliminarInventario(datos.id).then((autoArr) => {
+  console.log(autoArr)
+  handleClose()
+})} type="submit"  variant="contained" color="error"  size="large" >Eliminar Inventario</Button>
+}
+            
             </form>
         </Modal>
         </>

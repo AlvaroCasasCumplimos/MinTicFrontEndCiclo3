@@ -30,3 +30,30 @@ export const crearInventario = async (obj) => {
       throw err;
     }
   };
+
+  export const actualizarInventario = async (num, obj) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/inventory/${num}`,
+        "PUT",
+        {},
+        obj,
+        {},
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+  export const eliminarInventario = async (num) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/inventory/${num}`,
+        "DELETE",
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };

@@ -30,3 +30,30 @@ export const crearProveedor = async (obj) => {
       throw err;
     }
   };
+
+  export const actualizarProveedor = async (num, obj) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/provider/${num}`,
+        "PUT",
+        {},
+        obj,
+        {},
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+  export const eliminarProveedor = async (num) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/provider/${num}`,
+        "DELETE",
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };

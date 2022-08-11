@@ -30,3 +30,31 @@ export const crearUsuario = async (obj) => {
       throw err;
     }
   };
+
+
+  export const actualizarUsuario = async (num, obj) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/person/${num}`,
+        "PUT",
+        {},
+        obj,
+        {},
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+  export const eliminarUsuario = async (num) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/person/${num}`,
+        "DELETE",
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
