@@ -30,3 +30,31 @@ export const crearCliente = async (obj) => {
       throw err;
     }
   };
+
+  export const actualizarCliente = async (num, obj) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/client/${num}`,
+        "PUT",
+        {},
+        obj,
+        {},
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+  export const eliminarCliente = async (num) => {
+    try {
+      const res = await fetchData(
+        `${urlOrganica}/client/${num}`,
+        "DELETE",
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  

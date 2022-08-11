@@ -7,7 +7,7 @@ import Input from "../../componets/Input";
 import Modal from "../../componets/Modal/Modal";
 import TableModules from "../../componets/TableModules/TableModules";
 import "./gestionUsuarios.css";
-import { consultaUsuarios, crearUsuario } from "./utils/fetchUsuarios";
+import { consultaUsuarios, crearUsuario, actualizarUsuario, eliminarUsuario } from "./utils/fetchUsuarios";
 
 const GestionUsuarios = () => {
 
@@ -69,12 +69,20 @@ const GestionUsuarios = () => {
     const onSubmit = (ev) =>{
       ev.preventDefault();
       if (datos.id !== ""){
-
+        actualizarUsuario(datos.id,{
+          name:datos.name,
+          address:datos.address,
+          phone:datos.phone
+        })
+        .then((autoArr) => {
+          console.log(autoArr)
+          handleClose()
+        })
       }else{
           crearUsuario({
               name:datos.name,
               address:datos.address,
-              phone:datos.address 
+              phone:datos.phone 
           })
         .then((autoArr) => {
           console.log(autoArr)
@@ -102,7 +110,7 @@ const GestionUsuarios = () => {
             setShowModal(true)
             setDatos((old)=>({
               id:tableUsuarios[x].id,
-              name_user:tableUsuarios[x].name,
+              name:tableUsuarios[x].name,
               address:tableUsuarios[x].address,
               phone:tableUsuarios[x].phone
             }))
@@ -116,7 +124,7 @@ const GestionUsuarios = () => {
             className="formContainer"
             onSubmit={onSubmit}
           >
-            <h1>{datos.id_people !== "" ?  "Actualizar Usuario" : "Agregar Usuarios"}</h1>
+            <h1>{datos.id !== "" ?  "Actualizar Usuario" : "Agregar Usuarios"}</h1>
             <Input
               id="name"
               label="name"
@@ -145,6 +153,17 @@ const GestionUsuarios = () => {
               onInput={onChange}
             ></Input>
             <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Usuario" : "Agregar Usuario"}</Button>
+          
+            <h1></h1>
+
+{datos.id &&
+<Button onClick={()=>eliminarUsuario(datos.id).then((autoArr) => {
+  console.log(autoArr)
+  handleClose()
+})} type="submit"  variant="contained" color="error"  size="large" >Eliminar Usuario</Button>
+}
+          
+          
           </form>
       </Modal>
       </>

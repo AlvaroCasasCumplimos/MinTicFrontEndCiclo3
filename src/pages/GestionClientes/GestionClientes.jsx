@@ -7,7 +7,7 @@ import Input from "../../componets/Input";
 import Modal from "../../componets/Modal/Modal";
 import TableModules from "../../componets/TableModules/TableModules";
 import "./gestionClientes.css";
-import { consultaClientes, crearCliente } from "./utils/fetchClientes";
+import { consultaClientes, crearCliente, actualizarCliente, eliminarCliente} from "./utils/fetchClientes";
 
 const GestionClientes = () => {
 
@@ -65,7 +65,14 @@ const GestionClientes = () => {
     const onSubmit = (ev) =>{
       ev.preventDefault();
       if (datos.id !== ""){
-
+        actualizarCliente(datos.id,{
+          id_people:datos.id_people,
+          type:datos.type
+        })
+        .then((autoArr) => {
+          console.log(autoArr)
+          handleClose()
+        })
       }else{
           crearCliente({
               id_people:datos.id_people,
@@ -130,6 +137,18 @@ const GestionClientes = () => {
               onInput={onChange}
             ></Input>
             <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Cliente" : "Agregar Cliente"}</Button>
+          
+            <h1></h1>
+
+            {datos.id &&
+            <Button onClick={()=>eliminarCliente(datos.id).then((autoArr) => {
+              console.log(autoArr)
+              handleClose()
+            })} type="submit"  variant="contained" color="error"  size="large" >Eliminar Cliente</Button>
+          }
+
+
+          
           </form>
       </Modal>
       </>

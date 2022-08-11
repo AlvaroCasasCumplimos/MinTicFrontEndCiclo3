@@ -7,7 +7,7 @@ import Input from "../../componets/Input";
 import Modal from "../../componets/Modal/Modal";
 import TableModules from "../../componets/TableModules/TableModules";
 import "./gestionProductos.css";
-import { consultaProductos, crearProducto } from "./utils/fetchProductos";
+import { consultaProductos, crearProducto, actualizarProducto, eliminarProducto } from "./utils/fetchProductos";
 
 const GestionProductos = () => {
 
@@ -65,7 +65,15 @@ const GestionProductos = () => {
     const onSubmit = (ev) =>{
       ev.preventDefault();
       if (datos.id !== ""){
-
+        actualizarProducto(datos.id,{
+          id:datos.id,
+          name:datos.name,
+          description:datos.description
+        })
+        .then((autoArr) => {
+          console.log(autoArr)
+          handleClose()
+        })
       }else{
           crearProducto({
               name:datos.name,
@@ -87,7 +95,6 @@ const GestionProductos = () => {
           <Button onClick={()=>setShowModal(true)}  variant="contained" color="success"  size="large" >Agregar Producto</Button>
         </Stack>
       
-  
         <h1>Productos</h1>
   
         <TableModules
@@ -110,7 +117,7 @@ const GestionProductos = () => {
             className="formContainer"
             onSubmit={onSubmit}
           >
-            <h1>{datos.name !== "" ?  "Actualizar Productos" : "Agregar Producto"}</h1>
+            <h1>{datos.id !== "" ?  "Actualizar Productos" : "Agregar Producto"}</h1>
             <Input
               id="name"
               label="name"
@@ -130,6 +137,17 @@ const GestionProductos = () => {
               onInput={onChange}
             ></Input>
             <Button type="submit"  variant="contained" color="success"  size="large" >{datos.id !== "" ?  "Actualizar Productos" : "Agregar Productos"}</Button>
+          
+            <h1></h1>
+
+{datos.id &&
+<Button onClick={()=>eliminarProducto(datos.id).then((autoArr) => {
+  console.log(autoArr)
+  handleClose()
+})} type="submit"  variant="contained" color="error"  size="large" >Eliminar Producto</Button>
+}
+
+          
           </form>
       </Modal>
       </>
