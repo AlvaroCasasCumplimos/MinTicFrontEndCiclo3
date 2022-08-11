@@ -17,7 +17,7 @@ const LoginPage = () => {
           onSubmit={(e) => {
             e.preventDefault();
             login({
-              email: datosInicio.username,
+              email: datosInicio.user,
               password: datosInicio.password,
             });
           }}

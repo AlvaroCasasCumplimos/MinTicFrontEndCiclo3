@@ -1,6 +1,8 @@
 import { useReducer } from "react";
+import { notify, notifyError } from "../../utils/notify";
 import { AuthContext } from "./AuthContext";
 import { authReducer, initialState } from "./authReducer";
+import { loginFetch } from "./fetchAuth";
 import { types } from "./types";
 
 const initFunc = () => {
@@ -16,35 +18,31 @@ const initFunc = () => {
 export const AuthProvider = ({ children }) => {
   const [authState, dispatch] = useReducer(authReducer, initialState, initFunc);
 
-  const login = ({ email, password }) => {
-    fetch("https://jsonplaceholder.typicode.com/todos/1", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      // body: JSON.stringify({})
+  const login = ({email, password} ) => {
+    loginFetch({email,password })
+    .then((autoArr) => {
+      if(autoArr?.errors)
+        return notifyError(autoArr?.message ?? "Error en el tipado")
+        if(autoArr?.status === 0)
+        return notifyError(autoArr?.msg ?? "Error inicio de sesión")
+      const data = {
+        name: "Usuario",
+        lastName: "Apellido",
+        email,
+        role: "1",
+        token:autoArr?.access_token
+      };
+      const action = {
+        type: types.login,
+        payload: {
+          ...data,
+        },
+      };
+      localStorage.setItem("user", JSON.stringify(data));
+      notify(autoArr?.msg ?? "Inicio de sesion exitoso")
+      dispatch(action);
     })
-      .then((response) => response.json())
-      .then((d) => {
-        console.log(d);
-        const data = {
-          name: "Prueba",
-          lastName: "Apellido",
-          email: "sss",
-          role: "1",
-        };
-        const action = {
-          type: types.login,
-          payload: {
-            ...data,
-          },
-        };
-        localStorage.setItem("user", JSON.stringify(data));
-        dispatch(action);
-      })
-      .catch((error) => {
-        console.log("Hubo un problema con la petición Fetch:" + error.message);
-      });
+    .catch((err) => console.error(err));
   };
   const logout = () => {
     localStorage.removeItem("user");
