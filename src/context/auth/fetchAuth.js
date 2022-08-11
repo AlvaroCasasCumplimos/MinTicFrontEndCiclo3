@@ -1,6 +1,6 @@
 import fetchData from "../../utils/fetchData";
 
-const urlOrganica = "http://trazaorganica-agrocultiva.herokuapp.com/api"
+const urlOrganica = "https://trazaorganica-agrocultiva.herokuapp.com/api"
 
 export const loginFetch = async (obj) => {
     try {
