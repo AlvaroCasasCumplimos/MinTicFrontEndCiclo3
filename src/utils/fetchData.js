@@ -47,7 +47,9 @@ const fetchData = async (
     const id = setTimeout(() => abortController.abort(), timeout);
     const response = await fetch(resource, {
       ...options,
-      signal: abortController.signal  
+      signal: abortController.signal,
+      mode:"no-cors",
+      referrerPolicy:"unsafe-url"
     });
     clearTimeout(id);
     return response;
