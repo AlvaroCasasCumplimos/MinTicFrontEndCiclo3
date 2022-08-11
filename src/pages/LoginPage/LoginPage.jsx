@@ -26,7 +26,7 @@ const LoginPage = () => {
           <Input
             id="user"
             label="Nombre de usuario"
-            type="text"
+            type="email"
             name="user"
             required
             value={datosInicio.user}
