@@ -37,6 +37,7 @@ const fetchData = async (
       fetchOptions.body = data;
     } else {
       fetchOptions.headers["Content-Type"] = "application/json";
+      fetchOptions.headers["Accept"] = "application/json";
       fetchOptions.body = JSON.stringify(data);
     }
   }
@@ -49,7 +50,7 @@ const fetchData = async (
       ...options,
       signal: abortController.signal,
       mode:"no-cors",
-      referrerPolicy:"unsafe-url"
+      // referrerPolicy:"unsafe-url"
     });
     clearTimeout(id);
     return response;
